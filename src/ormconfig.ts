@@ -7,6 +7,8 @@ const config: ConnectionOptions = {
   username: 'boghdady',
   password: 'pass123',
   database: 'meduimdb',
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
+  synchronize: true,
 };
 
 export default config;
