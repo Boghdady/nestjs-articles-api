@@ -75,4 +75,8 @@ export class UserService {
     delete user.password;
     return user;
   }
+
+  async findOne(id: number): Promise<UserEntity> {
+    return await this.userRepository.findOne(id);
+  }
 }
