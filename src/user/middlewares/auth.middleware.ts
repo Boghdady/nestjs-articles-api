@@ -12,7 +12,7 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: CustomExpressRequest, _: Response, next: NextFunction) {
     if (!req.headers.authorization) {
       req.user = null;
-      next();
+      return next();
     }
 
     const token = req.headers.authorization.split(' ')[1];
@@ -21,10 +21,10 @@ export class AuthMiddleware implements NestMiddleware {
       const decoded = verify(token, JWT_SECRET);
       const user = await this.userService.findOne(decoded.id);
       req.user = user;
-      next();
+      return next();
     } catch (err) {
       req.user = null;
-      next();
+      return next();
     }
   }
 }
