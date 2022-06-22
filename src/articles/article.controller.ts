@@ -4,6 +4,7 @@ import { UserEntity } from '@app/user/user.entity';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -11,6 +12,8 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { DeleteResult } from 'typeorm';
+import { ArticleEntity } from './article.entity';
 import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dtos/createArticle.dto';
 import { ArticleResponseInterface } from './types/articleResponse.interface';
@@ -39,5 +42,19 @@ export class ArticleController {
   ): Promise<ArticleResponseInterface> {
     const article = await this.articleService.findArticleBySlug(slug);
     return this.articleService.buildArticleResponse(article);
+  }
+
+  @Get()
+  async getArticles(): Promise<ArticleEntity[]> {
+    return await this.articleService.findAllArticles();
+  }
+
+  @Delete(':slug')
+  @UseGuards(AuthGuard)
+  async deleteArticle(
+    @Param('slug') slug: string,
+    @User('id') currentUserId: number,
+  ): Promise<DeleteResult> {
+    return this.articleService.deleteArticle(slug, currentUserId);
   }
 }
