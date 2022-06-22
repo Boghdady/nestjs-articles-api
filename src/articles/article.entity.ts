@@ -15,6 +15,9 @@ export class ArticleEntity {
   @Column()
   title: string;
 
+  @Column()
+  slug: string;
+
   @Column({ default: '' })
   description: string;
 
